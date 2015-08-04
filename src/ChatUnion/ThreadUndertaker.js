@@ -1,4 +1,4 @@
-goog.module('vchat.ThreadsUndertaker');
+goog.module('vchat.ThreadUndertaker');
 
 var db = {
     threads: [
@@ -1024,13 +1024,13 @@ db.threads = db.threads.map(function(thread) {
 /**
  * @constructor
  */
-function ThreadsUndertaker() {
+function ThreadUndertaker() {
 }
 
 
-ThreadsUndertaker.prototype.getThreads = function(cb) {
+ThreadUndertaker.prototype.getThreads = function(cb) {
     setTimeout(cb.bind(null, null, db), 300);
 };
 
 
-exports = new ThreadsUndertaker();
+exports = new ThreadUndertaker();

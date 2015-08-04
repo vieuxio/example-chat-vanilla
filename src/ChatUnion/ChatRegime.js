@@ -1,7 +1,7 @@
 goog.module('vchat.ChatRegime');
 
 var EventTarget = goog.require('goog.events.EventTarget');
-var ThreadsUndertaker = goog.require('vchat.ThreadsUndertaker');
+var ThreadUndertaker = goog.require('vchat.ThreadUndertaker');
 var ThreadStereotype = goog.require('vchat.ThreadStereotype');
 
 
@@ -15,7 +15,7 @@ var ThreadStereotype = goog.require('vchat.ThreadStereotype');
 function ChatRegime() {
     ChatRegime.base(this, 'constructor');
 
-    this.undertaker = ThreadsUndertaker;
+    this.undertaker = ThreadUndertaker;
     this.threads = /* Array.<ThreadStereotype> */[];
     this.activeThread = null;
 
