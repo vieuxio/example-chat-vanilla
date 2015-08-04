@@ -10,12 +10,11 @@ users-list {
     display: block;
     position: absolute;
     height: 100%;
+    width: 280px;
     top: 0;
     padding: 10px;
-    overflow: scroll;
+    overflow: auto;
 }
 
 users-list {
-    width: 280px;
-    height: 100%;
 }
