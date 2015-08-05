@@ -1,12 +1,12 @@
-# vchat example with tartJS.
+# vchat example with Google Closure Library.
 
 This project implements an example application with Vieux architecture.
 
 ## Install
 
 ```
-$ git clone --recursive git@github.com:vieuxjs/chat-tartjs.git
-$ cd chat-tartjs
+$ git clone --recursive git@github.com:vieuxjs/example-chat-closure.git
+$ cd example-chat-closure
 $ npm install
 ```
 
