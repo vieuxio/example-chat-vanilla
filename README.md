@@ -1,6 +1,6 @@
-# vchat example with Google Closure Library.
+# Vieux example with Google Closure Library
 
-This project implements an example application with Vieux architecture.
+This project implements an example chat application with Vieux architecture. It demonstrates how a complex, stateful application should be built.
 
 ## Install
 
