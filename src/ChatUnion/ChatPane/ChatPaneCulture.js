@@ -22,7 +22,7 @@ goog.inherits(ChatPaneCulture, Culture);
 /**
  * @override
  */
-ChatPaneCulture.prototype.bindModelEvents = function() {
+ChatPaneCulture.prototype.bindRepEvents = function() {
     this.rep.listen(this.rep.EventType.CHANGE_ACTIVE_THREAD, this.changeActiveThread, false, this);
     this.rep.listen(this.rep.EventType.UPDATE, this.changeActiveThread, false, this);
 };

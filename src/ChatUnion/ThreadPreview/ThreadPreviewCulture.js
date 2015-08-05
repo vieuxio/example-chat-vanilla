@@ -24,7 +24,7 @@ goog.inherits(ThreadPreviewCulture, Culture);
 /**
  * @override
  */
-ThreadPreviewCulture.prototype.bindModelEvents = function() {
+ThreadPreviewCulture.prototype.bindRepEvents = function() {
     function updateActiveThreads() { // normally this would be a method on the prototype but somehow closure compiler
                                      // fucks up.
         goog.dom.classlist.enable(this.getElement(), 'active', this.rep.active);
@@ -33,7 +33,7 @@ ThreadPreviewCulture.prototype.bindModelEvents = function() {
     function update() {
         updateActiveThreads.call(this);
 
-        this.getChild('last-message')[0].innerText = this.rep.lastMessage;
+        this.$('last-message').innerText = this.rep.lastMessage;
     }
 
     this.rep.listen(this.rep.EventType.UPDATE_ACTIVE_THREAD, updateActiveThreads, false, this);

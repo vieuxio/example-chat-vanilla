@@ -22,7 +22,7 @@ goog.inherits(MotherPaneCulture, Culture);
 /**
  * @override
  */
-MotherPaneCulture.prototype.bindModelEvents = function() {
+MotherPaneCulture.prototype.bindRepEvents = function() {
     this.rep.listen(this.rep.EventType.INITIAL_DATA, this.onInit, false, this);
     this.rep.listen(this.rep.EventType.UPDATE, this.onUpdate, false, this);
 };
@@ -37,7 +37,7 @@ MotherPaneCulture.prototype.onInit = function(e) {
         return culture;
     }, this);
 
-    this.getChild('users-list')[0].innerHTML = this.threadPreviews.map(function(threadPreview) {
+    this.$('users-list').innerHTML = this.threadPreviews.map(function(threadPreview) {
         return threadPreview.getPlaceholder();
     }).join('');
 
@@ -48,7 +48,7 @@ MotherPaneCulture.prototype.onInit = function(e) {
 
 
 MotherPaneCulture.prototype.onUpdate = function(e) {
-    var list = this.getChild('users-list')[0];
+    var list = this.$('users-list');
 
     e.data.forEach(function(data) {
         var correspondingThreadPreview = this.threadPreviewsById[data.thread.id];
