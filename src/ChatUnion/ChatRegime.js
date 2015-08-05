@@ -20,6 +20,7 @@ function ChatRegime() {
     this.activeThread = null;
 
     this.getThreads_();
+    this.setupUpdates_();
 }
 goog.inherits(ChatRegime, EventTarget);
 
@@ -31,6 +32,13 @@ goog.inherits(ChatRegime, EventTarget);
  */
 ChatRegime.prototype.getThreads_ = function() {
     this.undertaker.getThreads(this.onInitialData.bind(this));
+};
+
+
+ChatRegime.prototype.setupUpdates_ = function() {
+    setTimeout(function() {
+        this.undertaker.getUpdates(this.onUpdate.bind(this));
+    }.bind(this), 1000);
 };
 
 
@@ -46,6 +54,29 @@ ChatRegime.prototype.onInitialData = function(err, data) {
 };
 
 
+ChatRegime.prototype.getThreadById = function(id) {
+    return this.threads.filter(function(thread) {
+        return thread.id == id;
+    })[0];
+};
+
+
+ChatRegime.prototype.onUpdate = function(err, data) {
+    if (err || !data.length) return this.setupUpdates_();
+
+    data.forEach(function(data) {
+        var correspondingThread = this.getThreadById(data.thread.id);
+        correspondingThread.messages.push(data.thread.messages.slice(correspondingThread.messages.length));
+    }, this);
+
+    this.dispatchEvent({
+        type: this.EventType.UPDATE,
+        data: data
+    });
+
+    this.setupUpdates_();
+};
+
 ChatRegime.prototype.setActive = function(thread) {
     this.activeThread = thread;
 
@@ -55,7 +86,8 @@ ChatRegime.prototype.setActive = function(thread) {
 
 ChatRegime.prototype.EventType = {
     INITIAL_DATA: 'initial data',
-    SET_ACTIVE_THREAD: 'set active thread'
+    SET_ACTIVE_THREAD: 'set active thread',
+    UPDATE: 'update'
 };
 
 exports = new ChatRegime();
