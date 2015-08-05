@@ -21,12 +21,26 @@ function ThreadPreviewRep(thread) {
     this.active = ChatRegime.activeThread == thread;
 
     ChatRegime.listen(ChatRegime.EventType.SET_ACTIVE_THREAD, this.onSetActiveThread, false, this);
+    ChatRegime.listen(ChatRegime.EventType.UPDATE, this.onUpdate, false, this);
 }
 goog.inherits(ThreadPreviewRep, Representative);
 
 
 ThreadPreviewRep.prototype.setActive = function() {
     ChatRegime.setActive(this.thread);
+};
+
+
+ThreadPreviewRep.prototype.onUpdate = function(e) {
+    e.data.some(function(data) {
+        if (data.thread.id != this.thread.id) return;
+
+        this.lastMessage = this.thread.messages.slice(-1);
+
+        this.dispatchEvent(this.EventType.UPDATE);
+
+        return true;
+    }, this);
 };
 
 
@@ -42,7 +56,8 @@ ThreadPreviewRep.prototype.onSetActiveThread = function() {
 
 
 ThreadPreviewRep.prototype.EventType = {
-    UPDATE_ACTIVE_THREAD: 'update active thread'
+    UPDATE_ACTIVE_THREAD: 'update active thread',
+    UPDATE: 'update'
 };
 
 

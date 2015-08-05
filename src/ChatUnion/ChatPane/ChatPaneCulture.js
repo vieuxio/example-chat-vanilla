@@ -24,11 +24,15 @@ goog.inherits(ChatPaneCulture, Culture);
  */
 ChatPaneCulture.prototype.bindModelEvents = function() {
     this.rep.listen(this.rep.EventType.CHANGE_ACTIVE_THREAD, this.changeActiveThread, false, this);
+    this.rep.listen(this.rep.EventType.UPDATE, this.changeActiveThread, false, this);
 };
 
 
 ChatPaneCulture.prototype.changeActiveThread = function() {
-    this.getElement().innerHTML = this.templates_inner();
+    var el = this.getElement();
+
+    el.innerHTML = this.templates_inner();
+    el.scrollTop = el.scrollHeight;
 };
 
 
@@ -50,7 +54,6 @@ ChatPaneCulture.prototype.templates_inner = function() {
         '<username><strong>' + user.getFullName() + '</strong></username>' +
         this.templates_messages() +
         '</messages>';
-
 };
 
 

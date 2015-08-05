@@ -14,6 +14,7 @@ function MotherPaneRep() {
     MotherPaneRep.base(this, 'constructor');
 
     ChatRegime.listen(ChatRegime.EventType.INITIAL_DATA, this.onInitialData, false, this);
+    ChatRegime.listen(ChatRegime.EventType.UPDATE, this.onUpdate, false, this);
 }
 goog.inherits(MotherPaneRep, Representative);
 
@@ -35,11 +36,23 @@ MotherPaneRep.prototype.onInitialData = function() {
 };
 
 
+MotherPaneRep.prototype.onUpdate = function(e) {
+    e.data.some(function(data) {
+        if (data.thread.user.username == this.activeThread.user.username) {
+            this.activeThread.active = true;
+        }
+    }.bind(this));
+
+    this.dispatchEvent(e);
+};
+
+
 /**
  * @enum {string}
  */
 MotherPaneRep.prototype.EventType = {
-    INITIAL_DATA: 'initial data'
+    INITIAL_DATA: 'initial data',
+    UPDATE: 'update'
 };
 
 

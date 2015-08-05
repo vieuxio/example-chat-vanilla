@@ -30,7 +30,14 @@ ThreadPreviewCulture.prototype.bindModelEvents = function() {
         goog.dom.classlist.enable(this.getElement(), 'active', this.rep.active);
     }
 
+    function update() {
+        updateActiveThreads.call(this);
+
+        this.getChild('last-message')[0].innerText = this.rep.lastMessage;
+    }
+
     this.rep.listen(this.rep.EventType.UPDATE_ACTIVE_THREAD, updateActiveThreads, false, this);
+    this.rep.listen(this.rep.EventType.UPDATE, update, false, this);
 };
 
 
