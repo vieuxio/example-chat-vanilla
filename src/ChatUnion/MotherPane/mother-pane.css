@@ -5,16 +5,3 @@ mother-pane {
     width: 100%;
     bottom: 0;
 }
-
-users-list {
-    display: block;
-    position: absolute;
-    height: 100%;
-    width: 280px;
-    top: 0;
-    padding: 10px;
-    overflow: auto;
-}
-
-users-list {
-}
