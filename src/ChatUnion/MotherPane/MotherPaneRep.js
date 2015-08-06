@@ -14,7 +14,6 @@ function MotherPaneRep() {
     MotherPaneRep.base(this, 'constructor');
 
     ChatRegime.listen(ChatRegime.EventType.INITIAL_DATA, this.onInitialData, false, this);
-    ChatRegime.listen(ChatRegime.EventType.UPDATE, this.onUpdate, false, this);
 }
 goog.inherits(MotherPaneRep, Representative);
 
@@ -33,6 +32,7 @@ MotherPaneRep.prototype.onInitialData = function() {
     }.bind(this));
 
     this.dispatchEvent(this.EventType.INITIAL_DATA);
+    ChatRegime.listen(ChatRegime.EventType.UPDATE, this.onUpdate, false, this);
 };
 
 

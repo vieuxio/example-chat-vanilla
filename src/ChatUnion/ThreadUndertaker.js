@@ -29,4 +29,12 @@ ThreadUndertaker.prototype.getUpdates = function(cb) {
 };
 
 
+ThreadUndertaker.prototype.getOwner = function(cb) {
+    console.log(db.owner);
+    var ownerCopy = JSON.parse(JSON.stringify(db.owner));
+
+    cb(null, ownerCopy);
+};
+
+
 exports = new ThreadUndertaker();

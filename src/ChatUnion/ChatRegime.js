@@ -21,6 +21,7 @@ function ChatRegime() {
 
     this.getThreads_();
     this.setupUpdates_();
+    this.getOwner_();
 }
 goog.inherits(ChatRegime, EventTarget);
 
@@ -66,6 +67,9 @@ ChatRegime.prototype.onUpdate = function(err, data) {
 
     data.forEach(function(data) {
         var correspondingThread = this.getThreadById(data.thread.id);
+
+        if (!correspondingThread) return;
+
         correspondingThread.messages.push(data.thread.messages.slice(correspondingThread.messages.length));
 
         correspondingThread.unread = data.thread.id != this.activeThread.id;
@@ -92,6 +96,13 @@ ChatRegime.prototype.setActive = function(thread) {
     this.activeThread.unread = false;
 
     this.dispatchEvent(this.EventType.SET_ACTIVE_THREAD);
+};
+
+
+ChatRegime.prototype.getOwner_ = function() {
+    this.undertaker.getOwner(function(err, owner) {
+        this.owner = owner;
+    }.bind(this));
 };
 
 

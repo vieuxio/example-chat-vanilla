@@ -29,10 +29,10 @@ ChatPaneCulture.prototype.bindRepEvents = function() {
 
 
 ChatPaneCulture.prototype.changeActiveThread = function() {
-    var el = this.getElement();
+    this.getElement().innerHTML = this.templates_inner();
 
-    el.innerHTML = this.templates_inner();
-    el.scrollTop = el.scrollHeight;
+    var messages = this.$('messages');
+    messages.scrollTop = messages.scrollHeight;
 };
 
 
@@ -50,10 +50,15 @@ ChatPaneCulture.prototype.templates_inner = function() {
     var user = this.rep.thread.user;
 
     return '<img src="' + user.picture.thumbnail + '"/>' +
-        '<messages>' +
         '<username><strong>' + user.getFullName() + '</strong></username>' +
+        '<messages>' +
         this.templates_messages() +
-        '</messages>';
+        '</messages>' +
+        '<entry>' +
+            '<img src="' + this.rep.owner.picture.thumbnail + '"/>' +
+            '<reply>This demo is for demonstrating unread threads synchronisation, so we left message typing out ' +
+                'for the sake of brevity.</reply>' +
+        '</entry>';
 };
 
 

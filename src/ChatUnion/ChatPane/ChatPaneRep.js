@@ -16,6 +16,7 @@ function ChatPaneRep(thread) {
 
     this.thread = thread;
     this.user = this.thread.user;
+    this.owner = ChatRegime.owner;
 
     ChatRegime.listen(ChatRegime.EventType.SET_ACTIVE_THREAD, this.onSetActiveThread, false, this);
     ChatRegime.listen(ChatRegime.EventType.UPDATE, this.onUpdate, false, this);
