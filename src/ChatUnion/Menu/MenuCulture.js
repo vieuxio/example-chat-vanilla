@@ -2,6 +2,7 @@ goog.module('vchat.MenuCulture');
 
 var Culture = goog.require('vieux.Culture');
 var MenuRep = goog.require('vchat.MenuRep');
+var Popover = goog.require('vchat.ThreadsPopoverCulture');
 
 
 
@@ -12,6 +13,7 @@ var MenuRep = goog.require('vchat.MenuRep');
  */
 function MenuCulture() {
     this.rep = new MenuRep();
+    this.popover = new Popover();
 
     MenuCulture.base(this, 'constructor');
 }
@@ -28,6 +30,11 @@ MenuCulture.prototype.onUpdate = function() {
 };
 
 
+MenuCulture.prototype.onClickButton = function() {
+    this.popover.toggle();
+};
+
+
 /**
  * @override
  */
@@ -35,8 +42,9 @@ MenuCulture.prototype.templates_base = function() {
     var buttonTemplate = this.templates_button();
 
     return '<menu id="' + this.getId() + '">' +
-        '<h1>Chat</h1>' +
+            '<h1>Chat</h1>' +
             '<button>' + buttonTemplate + '</button>' +
+            this.popover.getPlaceholder() +
         '</menu>';
 };
 
@@ -50,8 +58,10 @@ MenuCulture.prototype.templates_button = function() {
 };
 
 
-MenuCulture.prototype.EventType = {
-
+MenuCulture.prototype.events = {
+    'click': {
+        'button': MenuCulture.prototype.onClickButton
+    }
 };
 
 exports = MenuCulture;
