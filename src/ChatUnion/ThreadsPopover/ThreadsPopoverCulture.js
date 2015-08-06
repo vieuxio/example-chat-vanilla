@@ -3,21 +3,19 @@ goog.module('vchat.ThreadsPopoverCulture');
 var classlist = goog.require('goog.dom.classlist');
 var Culture = goog.require('vieux.Culture');
 var ThreadsPopoverRep = goog.require('vchat.ThreadsPopoverRep');
-var ThreadPreviewCulture = goog.require('vchat.ThreadPreviewCulture');
-var ThreadStereotype = goog.require('vchat.ThreadStereotype');
-var Event = goog.require('goog.events.Event');
 var ThreadList = goog.require('vchat.ThreadListCulture');
 
 
 
 /**
  * @constructor
- * @extends {vieux.Culture}
+ * @extends {Culture}
  */
 function ThreadsPopoverCulture() {
     this.rep = new ThreadsPopoverRep();
 
-    this.threadList = new ThreadList();
+    // the following line should have worked better, but compiler fucks up renaming things, so.
+    //this.threadList = new ThreadList();
 
     ThreadsPopoverCulture.base(this, 'constructor');
 }
@@ -26,7 +24,7 @@ goog.inherits(ThreadsPopoverCulture, Culture);
 
 ThreadsPopoverCulture.prototype.toggle = function() {
     this.rep.toggle();
-    goog.dom.classlist.enable(this.getElement(), 'visible', this.rep.visible);
+    classlist.enable(this.getElement(), 'visible', this.rep.visible);
 };
 
 
@@ -35,9 +33,10 @@ ThreadsPopoverCulture.prototype.toggle = function() {
  */
 ThreadsPopoverCulture.prototype.templates_base = function() {
     var visible = this.rep.visible ? 'visible' : '';
+    var threadList = new ThreadList(); // normally this shouldn't be here but the constructor, but compiler fucks up.
 
     return '<threads-popover id="' + this.getId() + '" class="' + visible + '">' +
-        this.threadList.getPlaceholder() +
+        threadList.getPlaceholder() +
         '</threads-popover>';
 };
 

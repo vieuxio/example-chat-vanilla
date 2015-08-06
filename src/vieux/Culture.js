@@ -13,7 +13,6 @@ var Disposable = goog.require('goog.Disposable');
  */
 function Culture() {
     Culture.base(this, 'constructor');
-    window.sdf = Ministry;
 
     this.id = Ministry.getUid();
 
@@ -22,7 +21,6 @@ function Culture() {
 }
 goog.inherits(Culture, Disposable);
 
-exports = Culture;
 
 
 /**
@@ -129,3 +127,6 @@ Culture.prototype.disposeInternal = function() {
     this.element = null;
     this.id = null;
 };
+
+
+exports = Culture;

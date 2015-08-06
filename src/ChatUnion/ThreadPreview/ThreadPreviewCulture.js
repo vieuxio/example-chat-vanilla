@@ -9,7 +9,7 @@ var Event = goog.require('goog.events.Event');
 
 /**
  * @constructor
- * @extends {vieux.Culture}
+ * @extends {Culture}
  *
  * @param {ThreadStereotype} thread A thread Stereotype instance.
  */

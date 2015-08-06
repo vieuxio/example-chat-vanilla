@@ -20,6 +20,9 @@ function MenuCulture() {
 goog.inherits(MenuCulture, Culture);
 
 
+/**
+ * @override
+ */
 MenuCulture.prototype.bindRepEvents = function() {
     this.rep.listen(this.rep.EventType.UPDATE, this.onUpdate, false, this);
 };
