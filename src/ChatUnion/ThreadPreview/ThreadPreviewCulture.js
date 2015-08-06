@@ -28,12 +28,19 @@ ThreadPreviewCulture.prototype.bindRepEvents = function() {
     function updateActiveThreads() { // normally this would be a method on the prototype but somehow closure compiler
                                      // fucks up.
         goog.dom.classlist.enable(this.getElement(), 'active', this.rep.active);
+        setUnread.call(this);
     }
 
     function update() {
         updateActiveThreads.call(this);
 
         this.$('last-message').innerText = this.rep.lastMessage;
+
+        setUnread.call(this);
+    }
+
+    function setUnread() {
+        goog.dom.classlist.enable(this.getElement(), 'unread', this.rep.thread.unread);
     }
 
     this.rep.listen(this.rep.EventType.UPDATE_ACTIVE_THREAD, updateActiveThreads, false, this);

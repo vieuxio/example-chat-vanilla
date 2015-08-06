@@ -13,6 +13,7 @@ function ThreadStereotype(thread) {
     this.user = new UserStereotype(thread.user);
     this.messages = thread.messages;
     this.active = false;
+    this.unread = false;
 }
 
 

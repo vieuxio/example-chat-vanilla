@@ -9,6 +9,12 @@ thread-preview.active {
     color: white;
 }
 
+thread-preview.unread {
+    background-color: #6b90da;
+    color: white;
+    -webkit-animation: unread-pulsate 3s infinite linear;
+}
+
 thread-preview img {
     height: 40px;
     width: 40px;
@@ -33,4 +39,16 @@ thread-preview last-message {
     overflow: hidden;
     width: 100%;
     display: block;
+}
+
+@-webkit-keyframes unread-pulsate {
+    0% {
+        background-color: #8bb0fa;
+    }
+    50% {
+        background-color: #6b90da;
+    }
+    100% {
+        background-color: #8bb0fa;
+    }
 }
