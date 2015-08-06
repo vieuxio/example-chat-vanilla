@@ -125,6 +125,7 @@ gulp.task('watch', function() {
 gulp.task('serve', function() {
     return gulp.src('dist').pipe(server({
         watchPath: 'src',
+        port: 1971,
         livereload: {
             enable: true,
             path: 'src'
