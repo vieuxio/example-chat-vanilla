@@ -1,6 +1,6 @@
-goog.module('vchat.ChatBoxRep');
+var util = require('util');
 
-var Representative = goog.require('vieux.Representative');
+var Representative = require('../../vieux/Representative');
 
 
 
@@ -10,9 +10,9 @@ var Representative = goog.require('vieux.Representative');
  * @extends {Representative}
  */
 function ChatBoxRep() {
-    ChatBoxRep.base(this, 'constructor');
+    ChatBoxRep.super_.prototype.constructor.call(this);
 }
-goog.inherits(ChatBoxRep, Representative);
+util.inherits(ChatBoxRep, Representative);
 
 
-exports = ChatBoxRep;
+module.exports = ChatBoxRep;

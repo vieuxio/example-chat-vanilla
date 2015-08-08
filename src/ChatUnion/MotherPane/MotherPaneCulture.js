@@ -1,9 +1,9 @@
-goog.module('vchat.MotherPaneCulture');
+var util = require('util');
 
-var Culture = goog.require('vieux.Culture');
-var MotherPaneRep = goog.require('vchat.MotherPaneRep');
-var ChatPaneCulture = goog.require('vchat.ChatPaneCulture');
-var ThreadList = goog.require('vchat.ThreadListCulture');
+var Culture = require('../../vieux/Culture');
+var MotherPaneRep = require('./MotherPaneRep');
+var ChatPaneCulture = require('../ChatPane/ChatPaneCulture');
+var ThreadList = require('../ThreadList/ThreadListCulture');
 
 
 
@@ -17,16 +17,16 @@ function MotherPaneCulture() {
 
     this.threadList = new ThreadList();
 
-    MotherPaneCulture.base(this, 'constructor');
+    MotherPaneCulture.super_.prototype.constructor.call(this);
 }
-goog.inherits(MotherPaneCulture, Culture);
+util.inherits(MotherPaneCulture, Culture);
 
 
 /**
  * @override
  */
 MotherPaneCulture.prototype.bindRepEvents = function() {
-    this.rep.listen(this.rep.EventType.INITIAL_DATA, this.onInit, false, this);
+    this.rep.on(this.rep.EventType.INITIAL_DATA, this.onInit.bind(this));
 };
 
 
@@ -55,5 +55,5 @@ MotherPaneCulture.prototype.disposeInternal = function() {
 };
 
 
-exports = MotherPaneCulture;
+module.exports = MotherPaneCulture;
 

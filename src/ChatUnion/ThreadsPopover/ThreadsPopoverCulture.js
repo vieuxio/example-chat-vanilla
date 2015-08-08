@@ -1,9 +1,9 @@
-goog.module('vchat.ThreadsPopoverCulture');
+var util = require('util');
+var helper = require('../../helper');
 
-var classlist = goog.require('goog.dom.classlist');
-var Culture = goog.require('vieux.Culture');
-var ThreadsPopoverRep = goog.require('vchat.ThreadsPopoverRep');
-var ThreadList = goog.require('vchat.ThreadListCulture');
+var Culture = require('../../vieux/Culture');
+var ThreadsPopoverRep = require('./ThreadsPopoverRep');
+var ThreadList = require('../ThreadList/ThreadListCulture');
 
 
 
@@ -17,14 +17,14 @@ function ThreadsPopoverCulture() {
     // the following line should have worked better, but compiler fucks up renaming things, so.
     //this.threadList = new ThreadList();
 
-    ThreadsPopoverCulture.base(this, 'constructor');
+    ThreadsPopoverCulture.super_.prototype.constructor.call(this);
 }
-goog.inherits(ThreadsPopoverCulture, Culture);
+util.inherits(ThreadsPopoverCulture, Culture);
 
 
 ThreadsPopoverCulture.prototype.toggle = function() {
     this.rep.toggle();
-    classlist.enable(this.getElement(), 'visible', this.rep.visible);
+    helper.enable(this.getElement(), 'visible', this.rep.visible);
 };
 
 
@@ -41,4 +41,4 @@ ThreadsPopoverCulture.prototype.templates_base = function() {
 };
 
 
-exports = ThreadsPopoverCulture;
+module.exports = ThreadsPopoverCulture;

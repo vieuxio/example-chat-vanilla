@@ -1,8 +1,8 @@
-goog.module('vchat.ThreadsPopoverRep');
+var util = require('util');
 
-var Representative = goog.require('vieux.Representative');
-var ThreadStereotype = goog.require('vchat.ThreadStereotype');
-var ChatRegime = goog.require('vchat.ChatRegime');
+var Representative = require('../../vieux/Representative');
+var ThreadStereotype = require('../ThreadStereotype');
+var ChatRegime = require('../ChatRegime');
 
 
 
@@ -12,11 +12,11 @@ var ChatRegime = goog.require('vchat.ChatRegime');
  * @extends {Representative}
  */
 function ThreadsPopoverRep() {
-    ThreadsPopoverRep.base(this, 'constructor');
+    ThreadsPopoverRep.super_.prototype.constructor.call(this);
 
     this.visible = false;
 }
-goog.inherits(ThreadsPopoverRep, Representative);
+util.inherits(ThreadsPopoverRep, Representative);
 
 
 ThreadsPopoverRep.prototype.toggle = function() {
@@ -28,9 +28,9 @@ ThreadsPopoverRep.prototype.toggle = function() {
  * @enum {string}
  */
 ThreadsPopoverRep.prototype.EventType = {
-    INITIAL_DATA: 'initial data',
+    INITIAL_DATA: 'initial-data',
     UPDATE: 'update'
 };
 
 
-exports = ThreadsPopoverRep;
+module.exports = ThreadsPopoverRep;

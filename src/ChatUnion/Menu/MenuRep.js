@@ -1,7 +1,7 @@
-goog.module('vchat.MenuRep');
+var util = require('util');
 
-var Representative = goog.require('vieux.Representative');
-var ChatRegime = goog.require('vchat.ChatRegime');
+var Representative = require('../../vieux/Representative');
+var ChatRegime = require('../ChatRegime');
 
 
 
@@ -11,19 +11,19 @@ var ChatRegime = goog.require('vchat.ChatRegime');
  * @extends {Representative}
  */
 function MenuRep() {
-    MenuRep.base(this, 'constructor');
+    MenuRep.super_.prototype.constructor.call(this);
     this.unreadCount = ChatRegime.getUnreadCount();
 
-    ChatRegime.listen(ChatRegime.EventType.UPDATE, this.onUpdate, false, this);
-    ChatRegime.listen(ChatRegime.EventType.SET_ACTIVE_THREAD, this.onUpdate, false, this);
+    ChatRegime.on(ChatRegime.EventType.UPDATE, this.onUpdate.bind(this));
+    ChatRegime.on(ChatRegime.EventType.SET_ACTIVE_THREAD, this.onUpdate.bind(this));
 }
-goog.inherits(MenuRep, Representative);
+util.inherits(MenuRep, Representative);
 
 
 MenuRep.prototype.onUpdate = function() {
     this.unreadCount = ChatRegime.getUnreadCount();
 
-    this.dispatchEvent(this.EventType.UPDATE);
+    this.emit(this.EventType.UPDATE);
 };
 
 
@@ -32,4 +32,4 @@ MenuRep.prototype.EventType = {
 };
 
 
-exports = MenuRep;
+module.exports = MenuRep;

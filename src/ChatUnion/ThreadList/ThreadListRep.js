@@ -1,7 +1,7 @@
-goog.module('vchat.ThreadListRep');
+var util = require('util');
 
-var Representative = goog.require('vieux.Representative');
-var ChatRegime = goog.require('vchat.ChatRegime');
+var Representative = require('../../vieux/Representative');
+var ChatRegime = require('../ChatRegime');
 
 
 
@@ -11,11 +11,11 @@ var ChatRegime = goog.require('vchat.ChatRegime');
  * @extends {Representative}
  */
 function ThreadListRep() {
-    ThreadListRep.base(this, 'constructor');
+    ThreadListRep.super_.prototype.constructor.call(this);
 
-    ChatRegime.listen(ChatRegime.EventType.INITIAL_DATA, this.onInitialData, false, this);
+    ChatRegime.on(ChatRegime.EventType.INITIAL_DATA, this.onInitialData.bind(this));
 }
-goog.inherits(ThreadListRep, Representative);
+util.inherits(ThreadListRep, Representative);
 
 
 /**
@@ -24,13 +24,13 @@ goog.inherits(ThreadListRep, Representative);
 ThreadListRep.prototype.onInitialData = function() {
     this.threads = ChatRegime.threads;
 
-    this.dispatchEvent(this.EventType.INITIAL_DATA);
-    ChatRegime.listen(ChatRegime.EventType.UPDATE, this.onUpdate, false, this);
+    this.emit(this.EventType.INITIAL_DATA);
+    ChatRegime.on(ChatRegime.EventType.UPDATE, this.onUpdate.bind(this));
 };
 
 
 ThreadListRep.prototype.onUpdate = function(e) {
-    this.dispatchEvent(e);
+    this.emit(e);
 };
 
 
@@ -38,9 +38,9 @@ ThreadListRep.prototype.onUpdate = function(e) {
  * @enum {string}
  */
 ThreadListRep.prototype.EventType = {
-    INITIAL_DATA: 'initial data',
+    INITIAL_DATA: 'initial-data',
     UPDATE: 'update'
 };
 
 
-exports = ThreadListRep;
+module.exports = ThreadListRep;

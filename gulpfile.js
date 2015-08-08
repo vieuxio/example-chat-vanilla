@@ -12,15 +12,20 @@ var gulp = require('gulp'),
     filenames = require('gulp-filenames'),
     shell = require('gulp-shell'),
     symlink = require('gulp-symlink'),
-    runSequence = require('run-sequence');
+    runSequence = require('run-sequence'),
+    source = require('vinyl-source-stream'),
+    buffer = require('vinyl-buffer'),
+    gutil = require('gulp-util'),
+    uglify = require('gulp-uglify'),
+    rename = require('gulp-rename'),
+    browserify = require('browserify');
 
 
 gulp.task('default', function(callback) {
     runSequence('clean:before',
-        ['deps', 'dev-process-html'],
-        'dev-symlink',
+        ['bundle',
         'watch',
-        'serve',
+        'serve'],
         callback);
 });
 
@@ -81,7 +86,7 @@ gulp.task('bundle-process-html', function() {
 
     return gulp.src('src/index.html').
         pipe(htmlReplace({
-            'tartjs': ['style.css', 'script.js']
+            'vchat': ['style.css', 'script.js']
         })).
         pipe(gulp.dest('dist')).
         pipe(revReplace({manifest: manifest})).
@@ -90,35 +95,13 @@ gulp.task('bundle-process-html', function() {
 });
 
 
-gulp.task('dev-process-html', ['get-css'], function() {
-    var css = filenames.get('css');
-    var js = ['lib/tartJS/third_party/goog/closure/goog/base.js', 'deps.js'];
-
-    return gulp.src('src/index.html').
-        pipe(htmlReplace({
-            'tartjs': css.concat(js)
-        }, {
-            keepUnassigned: true
-        })).
-        pipe(gulp.dest('dist'));
-});
-
-
-gulp.task('dev-symlink', function() {
-    return gulp.src(['lib/', 'src/*', '!src/index.html'], {read: false}).
-        pipe(symlink(function(file) {
-            return path.join('dist', file.relative);
-        }, {force: true}));
-});
-
-
 gulp.task('watch', function() {
     function changeLogger(event) {
         console.log('File ' + event.path + ' was ' + event.type + ', running tasks...');
     }
 
-    gulp.watch('src/**/*.js', ['deps']).on('change', changeLogger);
-    gulp.watch('src/index.html', ['dev-process-html']).on('change', changeLogger);
+    gulp.watch('src/**/*.js').on('change', changeLogger);
+    gulp.watch('src/index.html', ['bundle']).on('change', changeLogger);
 });
 
 
@@ -135,44 +118,18 @@ gulp.task('serve', function() {
 });
 
 
-gulp.task('deps', shell.task(
-    'lib/tartJS/third_party/goog/closure/bin/build/depswriter.py \
-        --root_with_prefix="lib/tartJS/tart ../../../../tart" \
-        --root_with_prefix="lib/tartJS/third_party/goog/closure/goog ./" \
-        --root_with_prefix="lib/tartJS/third_party/goog/third_party/closure/goog ../../third_party/closure/goog" \
-        --root_with_prefix="src/ ../../../../../../" \
-        --output_file="dist/deps.js"'
-));
-
-
-gulp.task('compile', shell.task(
-    'lib/tartJS/third_party/goog/closure/bin/build/closurebuilder.py \
-        --root=src/ \
-        --root=lib/tartJS/tart/ \
-        --root=lib/tartJS/third_party/goog/closure/goog/ \
-        --root=lib/tartJS/third_party/goog/third_party/closure/goog/ \
-        --namespace="vchat.app" \
-        --output_mode=compiled \
-        --output_file=dist/script.js \
-        --compiler_jar=lib/tartJS/tools/compiler/compiler.jar \
-        --compiler_flags="--compilation_level=ADVANCED_OPTIMIZATIONS" \
-        --compiler_flags="--output_wrapper=\'(function(){%output%})()\'" \
-        --compiler_flags="--create_source_map=\'dist/source_map.js\'" ' +
-        //'--compiler_flags="--formatting=PRETTY_PRINT"' +
-        '--compiler_flags="--warning_level=VERBOSE" \
-        --compiler_flags="--externs=lib/tartJS/tart/externs/jquery-1.4.4.externs.js" \
-        --compiler_flags="--externs=lib/tartJS/tart/externs/tart.externs.js" \
-        --compiler_flags="--externs=lib/tartJS/tart/externs/jasmine.externs.js" \
-        --compiler_flags="--externs=src/externs.js" \
-        --compiler_flags="--jscomp_error=accessControls" \
-        --compiler_flags="--jscomp_error=checkRegExp" \
-        --compiler_flags="--jscomp_error=checkTypes" \
-        --compiler_flags="--jscomp_error=checkVars" \
-        --compiler_flags="--jscomp_error=invalidCasts" \
-        --compiler_flags="--jscomp_error=missingProperties" \
-        --compiler_flags="--jscomp_error=nonStandardJsDocs" \
-        --compiler_flags="--jscomp_error=strictModuleDepCheck" \
-        --compiler_flags="--jscomp_error=undefinedVars" \
-        --compiler_flags="--jscomp_error=unknownDefines" \
-        --compiler_flags="--jscomp_error=visibility"'
-));
+gulp.task('compile', function () {
+    // set up the browserify instance on a task basis
+    var b = browserify({
+        entries: ['./src/app.js'],
+        debug: true
+    });
+    return b.bundle()
+        .pipe(source('./src/app.js'))
+        .pipe(buffer())
+            // Add transformation tasks to the pipeline here.
+            .pipe(uglify())
+            .on('error', gutil.log)
+        .pipe(rename('script.js'))
+        .pipe(gulp.dest('./dist/'));
+});

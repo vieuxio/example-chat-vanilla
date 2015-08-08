@@ -1,5 +1,4 @@
-goog.module('vchat.ThreadUndertaker');
-var db = goog.require('vchat.db');
+var db = require('../db');
 
 
 
@@ -37,4 +36,4 @@ ThreadUndertaker.prototype.getOwner = function(cb) {
 };
 
 
-exports = new ThreadUndertaker();
+module.exports = new ThreadUndertaker();

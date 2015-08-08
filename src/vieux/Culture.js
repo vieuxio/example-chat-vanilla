@@ -1,9 +1,4 @@
-goog.module('vieux.Culture');
-
-var Ministry = goog.require('vieux.CultureMinistry');
-var Disposable = goog.require('goog.Disposable');
-
-
+var Ministry = require('./CultureMinistry');
 
 /**
  * Base Culture class.
@@ -12,14 +7,11 @@ var Disposable = goog.require('goog.Disposable');
  * @extends {Disposable}
  */
 function Culture() {
-    Culture.base(this, 'constructor');
-
     this.id = Ministry.getUid();
 
     Ministry.set(this);
     this.bindRepEvents();
 }
-goog.inherits(Culture, Disposable);
 
 
 
@@ -129,4 +121,4 @@ Culture.prototype.disposeInternal = function() {
 };
 
 
-exports = Culture;
+module.exports = Culture;

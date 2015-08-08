@@ -1,5 +1,3 @@
-goog.module('vchat.db');
-
 var db = {
     threads: [
         {
@@ -1067,7 +1065,7 @@ function getRandomMessages() {
 }
 
 
-exports = {
+module.exports = {
     db: db,
     updates: updates,
     owner: owner

@@ -1,7 +1,7 @@
-goog.module('vchat.ChatPaneCulture');
+var util = require('util');
 
-var Culture = goog.require('vieux.Culture');
-var ChatPaneRep = goog.require('vchat.ChatPaneRep');
+var Culture = require('../../vieux/Culture');
+var ChatPaneRep = require('./ChatPaneRep');
 
 
 
@@ -14,17 +14,17 @@ var ChatPaneRep = goog.require('vchat.ChatPaneRep');
 function ChatPaneCulture(thread) {
     this.rep = new ChatPaneRep(thread);
 
-    ChatPaneCulture.base(this, 'constructor');
+    ChatPaneCulture.super_.prototype.constructor.call(this);
 }
-goog.inherits(ChatPaneCulture, Culture);
+util.inherits(ChatPaneCulture, Culture);
 
 
 /**
  * @override
  */
 ChatPaneCulture.prototype.bindRepEvents = function() {
-    this.rep.listen(this.rep.EventType.CHANGE_ACTIVE_THREAD, this.changeActiveThread, false, this);
-    this.rep.listen(this.rep.EventType.UPDATE, this.changeActiveThread, false, this);
+    this.rep.on(this.rep.EventType.CHANGE_ACTIVE_THREAD, this.changeActiveThread.bind(this));
+    this.rep.on(this.rep.EventType.UPDATE, this.changeActiveThread.bind(this));
 };
 
 
@@ -75,5 +75,5 @@ ChatPaneCulture.prototype.templates_message = function(message) {
     return '<message>' + message + '</message>';
 };
 
-exports = ChatPaneCulture;
+module.exports = ChatPaneCulture;
 

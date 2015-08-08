@@ -1,10 +1,9 @@
-goog.module('vchat.ThreadPreviewCulture');
+var util = require('util');
+var helper = require('../../helper');
 
-var classlist = goog.require('goog.dom.classlist');
-var Culture = goog.require('vieux.Culture');
-var ThreadPreviewRep = goog.require('vchat.ThreadPreviewRep');
-var ThreadStereotype = goog.require('vchat.ThreadStereotype');
-var Event = goog.require('goog.events.Event');
+var Culture = require('../../vieux/Culture');
+var ThreadPreviewRep = require('./ThreadPreviewRep');
+var ThreadStereotype = require('../ThreadStereotype');
 
 
 /**
@@ -16,9 +15,9 @@ var Event = goog.require('goog.events.Event');
 function ThreadPreviewCulture(thread) {
     this.rep = new ThreadPreviewRep(thread);
 
-    ThreadPreviewCulture.base(this, 'constructor');
+    ThreadPreviewCulture.super_.prototype.constructor.call(this);
 }
-goog.inherits(ThreadPreviewCulture, Culture);
+util.inherits(ThreadPreviewCulture, Culture);
 
 
 /**
@@ -27,7 +26,7 @@ goog.inherits(ThreadPreviewCulture, Culture);
 ThreadPreviewCulture.prototype.bindRepEvents = function() {
     function updateActiveThreads() { // normally this would be a method on the prototype but somehow closure compiler
                                      // fucks up.
-        goog.dom.classlist.enable(this.getElement(), 'active', this.rep.active);
+        helper.enable(this.getElement(), 'active', this.rep.active);
         setUnread.call(this);
     }
 
@@ -40,11 +39,11 @@ ThreadPreviewCulture.prototype.bindRepEvents = function() {
     }
 
     function setUnread() {
-        goog.dom.classlist.enable(this.getElement(), 'unread', this.rep.thread.unread);
+        helper.enable(this.getElement(), 'unread', this.rep.thread.unread);
     }
 
-    this.rep.listen(this.rep.EventType.UPDATE_ACTIVE_THREAD, updateActiveThreads, false, this);
-    this.rep.listen(this.rep.EventType.UPDATE, update, false, this);
+    this.rep.on(this.rep.EventType.UPDATE_ACTIVE_THREAD, updateActiveThreads.bind(this));
+    this.rep.on(this.rep.EventType.UPDATE, update.bind(this));
 };
 
 
@@ -75,5 +74,4 @@ ThreadPreviewCulture.prototype.events = {
     }
 };
 
-
-exports = ThreadPreviewCulture;
+module.exports = ThreadPreviewCulture;

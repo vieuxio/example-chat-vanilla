@@ -1,12 +1,12 @@
-# Vieux example with Google Closure Library
+# Vieux example with Vanilla.js
 
 This project implements an example chat application with Vieux architecture. It demonstrates how a complex, stateful application should be built.
 
 ## Install
 
 ```
-$ git clone --recursive git@github.com:vieuxjs/example-chat-closure.git
-$ cd example-chat-closure
+$ git clone --recursive git@github.com:vieuxjs/example-chat-vanilla.git
+$ cd example-chat-vanilla
 $ npm install
 ```
 

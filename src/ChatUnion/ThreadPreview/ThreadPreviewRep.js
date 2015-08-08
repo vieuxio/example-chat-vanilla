@@ -1,8 +1,8 @@
-goog.module('vchat.ThreadPreviewRep');
+var util = require('util');
 
-var Representative = goog.require('vieux.Representative');
-var ThreadStereotype = goog.require('vchat.ThreadStereotype');
-var ChatRegime = goog.require('vchat.ChatRegime');
+var Representative = require('../../vieux/Representative');
+var ThreadStereotype = require('../ThreadStereotype');
+var ChatRegime = require('../ChatRegime');
 
 
 
@@ -13,17 +13,17 @@ var ChatRegime = goog.require('vchat.ChatRegime');
  * @param {ThreadStereotype} thread A thread Stereotype
  */
 function ThreadPreviewRep(thread) {
-    ThreadPreviewRep.base(this, 'constructor');
+    ThreadPreviewRep.super_.prototype.constructor.call(this);
 
     this.thread = thread;
     this.user = thread.user;
     this.lastMessage = thread.messages.slice(-1);
     this.active = ChatRegime.activeThread == thread;
 
-    ChatRegime.listen(ChatRegime.EventType.SET_ACTIVE_THREAD, this.onSetActiveThread, false, this);
-    ChatRegime.listen(ChatRegime.EventType.UPDATE, this.onUpdate, false, this);
+    ChatRegime.on(ChatRegime.EventType.SET_ACTIVE_THREAD, this.onSetActiveThread.bind(this));
+    ChatRegime.on(ChatRegime.EventType.UPDATE, this.onUpdate.bind(this));
 }
-goog.inherits(ThreadPreviewRep, Representative);
+util.inherits(ThreadPreviewRep, Representative);
 
 
 ThreadPreviewRep.prototype.setActive = function() {
@@ -37,7 +37,7 @@ ThreadPreviewRep.prototype.onUpdate = function(e) {
 
         this.lastMessage = this.thread.messages.slice(-1);
 
-        this.dispatchEvent(this.EventType.UPDATE);
+        this.emit(this.EventType.UPDATE);
 
         return true;
     }, this);
@@ -50,15 +50,15 @@ ThreadPreviewRep.prototype.onSetActiveThread = function() {
     if (this.active != newActive) {
         this.active = newActive;
 
-        this.dispatchEvent(this.EventType.UPDATE_ACTIVE_THREAD);
+        this.emit(this.EventType.UPDATE_ACTIVE_THREAD);
     }
 };
 
 
 ThreadPreviewRep.prototype.EventType = {
-    UPDATE_ACTIVE_THREAD: 'update active thread',
+    UPDATE_ACTIVE_THREAD: 'update-active-thread',
     UPDATE: 'update'
 };
 
 
-exports = ThreadPreviewRep;
+module.exports = ThreadPreviewRep;

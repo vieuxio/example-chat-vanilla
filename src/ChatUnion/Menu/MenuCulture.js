@@ -1,8 +1,8 @@
-goog.module('vchat.MenuCulture');
+var util = require('util');
 
-var Culture = goog.require('vieux.Culture');
-var MenuRep = goog.require('vchat.MenuRep');
-var Popover = goog.require('vchat.ThreadsPopoverCulture');
+var Culture = require('../../vieux/Culture');
+var MenuRep = require('./MenuRep');
+var Popover = require('../ThreadsPopover/ThreadsPopoverCulture');
 
 
 
@@ -15,16 +15,16 @@ function MenuCulture() {
     this.rep = new MenuRep();
     this.popover = new Popover();
 
-    MenuCulture.base(this, 'constructor');
+    MenuCulture.super_.prototype.constructor.call(this);
 }
-goog.inherits(MenuCulture, Culture);
+util.inherits(MenuCulture, Culture);
 
 
 /**
  * @override
  */
 MenuCulture.prototype.bindRepEvents = function() {
-    this.rep.listen(this.rep.EventType.UPDATE, this.onUpdate, false, this);
+    this.rep.on(this.rep.EventType.UPDATE, this.onUpdate.bind(this));
 };
 
 
@@ -67,4 +67,4 @@ MenuCulture.prototype.events = {
     }
 };
 
-exports = MenuCulture;
+module.exports = MenuCulture;

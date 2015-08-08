@@ -1,7 +1,7 @@
-goog.module('vchat.MotherPaneRep');
+var util = require('util');
 
-var Representative = goog.require('vieux.Representative');
-var ChatRegime = goog.require('vchat.ChatRegime');
+var Representative = require('../../vieux/Representative');
+var ChatRegime = require('../ChatRegime');
 
 
 
@@ -11,11 +11,11 @@ var ChatRegime = goog.require('vchat.ChatRegime');
  * @extends {Representative}
  */
 function MotherPaneRep() {
-    MotherPaneRep.base(this, 'constructor');
+    MotherPaneRep.super_.prototype.constructor.call(this);
 
-    ChatRegime.listen(ChatRegime.EventType.INITIAL_DATA, this.onInitialData, false, this);
+    ChatRegime.on(ChatRegime.EventType.INITIAL_DATA, this.onInitialData.bind(this));
 }
-goog.inherits(MotherPaneRep, Representative);
+util.inherits(MotherPaneRep, Representative);
 
 
 /**
@@ -31,8 +31,8 @@ MotherPaneRep.prototype.onInitialData = function() {
         }
     }.bind(this));
 
-    this.dispatchEvent(this.EventType.INITIAL_DATA);
-    ChatRegime.listen(ChatRegime.EventType.UPDATE, this.onUpdate, false, this);
+    this.emit(this.EventType.INITIAL_DATA);
+    ChatRegime.on(ChatRegime.EventType.UPDATE, this.onUpdate.bind(this));
 };
 
 
@@ -43,7 +43,7 @@ MotherPaneRep.prototype.onUpdate = function(e) {
         }
     }.bind(this));
 
-    this.dispatchEvent(e);
+    this.emit(e);
 };
 
 
@@ -51,9 +51,9 @@ MotherPaneRep.prototype.onUpdate = function(e) {
  * @enum {string}
  */
 MotherPaneRep.prototype.EventType = {
-    INITIAL_DATA: 'initial data',
+    INITIAL_DATA: 'initial-data',
     UPDATE: 'update'
 };
 
 
-exports = MotherPaneRep;
+module.exports = MotherPaneRep;

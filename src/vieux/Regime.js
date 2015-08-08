@@ -1,19 +1,17 @@
-goog.module('vieux.Regime');
+var util = require('util');
 
-var EventTarget = goog.require('goog.events.EventTarget');
-
-
+var EventEmitter = require('events').EventEmitter;
 
 /**
  * Base Regime class.
  *
  * @constructor
- * @extends {EventTarget}
+ * @extends {EventEmitter}
  */
 function Regime() {
-    Regime.base(this, 'constructor');
+    Regime.super_.prototype.constructor.call(this);
 }
-goog.inherits(Regime, EventTarget);
+util.inherits(Regime, EventEmitter);
 
 
-exports = Regime;
+module.exports = Regime;

@@ -1,7 +1,3 @@
-goog.module('vieux.CultureMinistry');
-
-
-
 /**
  *
  * @constructor
@@ -10,7 +6,9 @@ function CultureMinistry() {
     /** @type {Object.<string, vieux.Culture>} */
     this.cults = {};
 
-    goog.events.listen(document.body, CultureMinistry.eventTypes, this);
+    CultureMinistry.eventTypes.forEach(function (e) {
+        document.body.addEventListener(e, this.handleEvent.bind(this));
+    }.bind(this));
 }
 
 
@@ -51,20 +49,19 @@ CultureMinistry.prototype.getParentCults = function(child) {
  * @type {Array.<goog.events.EventType>}
  */
 CultureMinistry.eventTypes = [
-    goog.events.EventType.CLICK,
-    goog.events.EventType.MOUSEOVER,
-    goog.events.EventType.MOUSEOUT,
-    goog.events.EventType.MOUSEMOVE,
-    goog.events.EventType.MOUSEDOWN,
-    goog.events.EventType.MOUSEUP,
-    goog.events.EventType.SCROLL,
-    goog.events.EventType.KEYUP,
-    goog.events.EventType.KEYPRESS,
-    goog.events.EventType.FOCUSIN,
-    goog.events.EventType.FOCUSOUT,
-    goog.events.EventType.TOUCHSTART,
-    goog.events.EventType.TOUCHMOVE,
-    goog.events.EventType.TOUCHEND
+    'click',
+    'mouseover',
+    'mouseout',
+    'mousemove',
+    'mousedown',
+    'mouseup',
+    'scroll',
+    'keyup',
+    'keypress',
+    'focus',
+    'touchstart',
+    'touchmove',
+    'touchend'
 ];
 
 
@@ -101,7 +98,7 @@ CultureMinistry.prototype.callHandlers_ = function(cults, e) {
 
         if (!handlers) continue;
 
-        var selectors = goog.object.getKeys(handlers);
+        var selectors = Object.keys(handlers);
 
         if (this.callHandler_(cult, e, handlers, selectors) === false) {
             broken = true;
@@ -124,7 +121,7 @@ CultureMinistry.prototype.callHandlers_ = function(cults, e) {
  */
 CultureMinistry.prototype.callHandler_ = function(cult, e, handlers, selectors){
     var rv = true;
-    goog.array.forEach(selectors, function(selector) {
+    selectors.forEach(function(selector) {
         // event's target equals to handler's selector
         if (this.matchesSelector(e.target, selector)) {
             rv = handlers[selector].call(cult, e);
@@ -143,7 +140,7 @@ CultureMinistry.prototype.callHandler_ = function(cult, e, handlers, selectors){
  * @return {*}
  */
 CultureMinistry.prototype.matchesSelector = function(el, selector) {
-    return goog.array.indexOf(document.querySelectorAll(selector), el) >= 0;
+    return [].indexOf.call(document.querySelectorAll(selector), el) >= 0;
 };
 
 
@@ -193,4 +190,4 @@ CultureMinistry.prototype.remove = function(cult) {
 })();
 
 
-exports = new CultureMinistry();
+module.exports = new CultureMinistry();

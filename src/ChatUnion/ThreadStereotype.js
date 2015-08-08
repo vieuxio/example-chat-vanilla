@@ -1,6 +1,4 @@
-goog.module('vchat.ThreadStereotype');
-
-var UserStereotype = goog.require('vchat.UserStereotype');
+var UserStereotype = require('./UserStereotype');
 
 
 /**
@@ -17,4 +15,4 @@ function ThreadStereotype(thread) {
 }
 
 
-exports = ThreadStereotype;
+module.exports = ThreadStereotype;

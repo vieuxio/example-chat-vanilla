@@ -1,17 +1,15 @@
-goog.module('vchat.RootRep');
+var util = require('util');
 
-var Representative = goog.require('vieux.Representative');
-
-
+var Representative = require('../../vieux/Representative');
 
 /**
  * @constructor
  * @extends {Representative}
  */
 function RootRep() {
-    RootRep.base(this, 'constructor');
+    RootRep.super_.prototype.constructor.call(this);
 }
-goog.inherits(RootRep, Representative);
+util.inherits(RootRep, Representative);
 
 
-exports = RootRep;
+module.exports = RootRep;

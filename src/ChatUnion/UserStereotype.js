@@ -1,6 +1,3 @@
-goog.module('vchat.UserStereotype');
-
-
 /**
  * @constructor
  *
@@ -23,4 +20,4 @@ function capitalize(str) {
 }
 
 
-exports = UserStereotype;
+module.exports = UserStereotype;

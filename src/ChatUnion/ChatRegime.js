@@ -1,8 +1,8 @@
-goog.module('vchat.ChatRegime');
+var util = require('util');
 
-var EventTarget = goog.require('goog.events.EventTarget');
-var ThreadUndertaker = goog.require('vchat.ThreadUndertaker');
-var ThreadStereotype = goog.require('vchat.ThreadStereotype');
+var EventEmitter = require('events').EventEmitter;
+var ThreadUndertaker = require('./ThreadUndertaker');
+var ThreadStereotype = require('./ThreadStereotype');
 
 
 
@@ -10,10 +10,10 @@ var ThreadStereotype = goog.require('vchat.ThreadStereotype');
  * ChatRegime is responsible for dealing with all the business logic of the chat application.
  *
  * @constructor
- * @extends {EventTarget}
+ * @extends {EventEmitter}
  */
 function ChatRegime() {
-    ChatRegime.base(this, 'constructor');
+    ChatRegime.super_.prototype.constructor.call(this);
 
     this.undertaker = ThreadUndertaker;
     this.threads = /* Array.<ThreadStereotype> */[];
@@ -23,7 +23,7 @@ function ChatRegime() {
     this.setupUpdates_();
     this.getOwner_();
 }
-goog.inherits(ChatRegime, EventTarget);
+util.inherits(ChatRegime, EventEmitter);
 
 
 /**
@@ -51,7 +51,7 @@ ChatRegime.prototype.onInitialData = function(err, data) {
     });
     this.activeThread = this.threads[0];
 
-    this.dispatchEvent(this.EventType.INITIAL_DATA);
+    this.emit(this.EventType.INITIAL_DATA);
 };
 
 
@@ -75,7 +75,7 @@ ChatRegime.prototype.onUpdate = function(err, data) {
         correspondingThread.unread = data.thread.id != this.activeThread.id;
     }, this);
 
-    this.dispatchEvent({
+    this.emit({
         type: this.EventType.UPDATE,
         data: data
     });
@@ -95,7 +95,7 @@ ChatRegime.prototype.setActive = function(thread) {
     this.activeThread = thread;
     this.activeThread.unread = false;
 
-    this.dispatchEvent(this.EventType.SET_ACTIVE_THREAD);
+    this.emit(this.EventType.SET_ACTIVE_THREAD);
 };
 
 
@@ -107,9 +107,9 @@ ChatRegime.prototype.getOwner_ = function() {
 
 
 ChatRegime.prototype.EventType = {
-    INITIAL_DATA: 'initial data',
-    SET_ACTIVE_THREAD: 'set active thread',
+    INITIAL_DATA: 'initial-data',
+    SET_ACTIVE_THREAD: 'set-active-thread',
     UPDATE: 'update'
 };
 
-exports = new ChatRegime();
+module.exports = new ChatRegime();

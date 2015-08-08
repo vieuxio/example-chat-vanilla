@@ -1,7 +1,7 @@
-goog.module('vchat.ChatBoxCulture');
+var util = require('util');
 
-var ChatBoxRep = goog.require('vchat.ChatBoxRep');
-var Culture = goog.require('vieux.Culture');
+var Culture = require('../../vieux/Culture');
+var ChatBoxRep = require('./ChatBoxRep');
 
 
 
@@ -12,14 +12,13 @@ var Culture = goog.require('vieux.Culture');
  */
 function ChatBoxCulture() {
     this.rep = new ChatBoxRep();
-    ChatBoxCulture.base(this, 'constructor');
+    ChatBoxCulture.super_.prototype.constructor.call(this);
 }
-goog.inherits(ChatBoxCulture, Culture);
+util.inherits(ChatBoxCulture, Culture);
 
 
 ChatBoxCulture.prototype.render = function(opt_base) {
-    ChatBoxCulture.base(this, 'render', opt_base);
-
+    ChatBoxCulture.super_.prototype.render.call(this, opt_base);
 };
 
 
@@ -53,5 +52,5 @@ ChatBoxCulture.prototype.templates_messages = function() {
         '</messages>';
 };
 
-exports = ChatBoxCulture;
+module.exports = ChatBoxCulture;
 

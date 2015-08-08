@@ -1,19 +1,17 @@
-goog.module('vieux.Representative');
+var util = require('util');
 
-var EventTarget = goog.require('goog.events.EventTarget');
-
-
+var EventEmitter = require('events').EventEmitter;
 
 /**
  * Base Representative class.
  *
  * @constructor
- * @extends {EventTarget}
+ * @extends {EventEmitter}
  */
 function Representative() {
-    Representative.base(this, 'constructor');
+    Representative.super_.prototype.constructor.call(this);
 }
-goog.inherits(Representative, EventTarget);
+util.inherits(Representative, EventEmitter);
 
 
-exports = Representative;
+module.exports = Representative;

@@ -1,9 +1,9 @@
-goog.module('vchat.ThreadListCulture');
+var util = require('util');
 
-var Culture = goog.require('vieux.Culture');
-var ThreadListRep = goog.require('vchat.ThreadListRep');
-var ThreadPreviewCulture = goog.require('vchat.ThreadPreviewCulture');
-var ChatPaneCulture = goog.require('vchat.ChatPaneCulture');
+var Culture = require('../../vieux/Culture');
+var ThreadListRep = require('./ThreadListRep');
+var ThreadPreviewCulture = require('../ThreadPreview/ThreadPreviewCulture');
+var ChatPaneCulture = require('../ChatPane/ChatPaneCulture');
 
 
 
@@ -15,17 +15,17 @@ var ChatPaneCulture = goog.require('vchat.ChatPaneCulture');
 function ThreadListCulture() {
     this.rep = new ThreadListRep();
 
-    ThreadListCulture.base(this, 'constructor');
+    ThreadListCulture.super_.prototype.constructor.call(this);
 }
-goog.inherits(ThreadListCulture, Culture);
+util.inherits(ThreadListCulture, Culture);
 
 
 /**
  * @override
  */
 ThreadListCulture.prototype.bindRepEvents = function() {
-    this.rep.listen(this.rep.EventType.INITIAL_DATA, this.onInit, false, this);
-    this.rep.listen(this.rep.EventType.UPDATE, this.onUpdate, false, this);
+    this.rep.on(this.rep.EventType.INITIAL_DATA, this.onInit.bind(this));
+    this.rep.on(this.rep.EventType.UPDATE, this.onUpdate.bind(this));
 };
 
 
@@ -73,5 +73,5 @@ ThreadListCulture.prototype.disposeInternal = function() {
 };
 
 
-exports = ThreadListCulture;
+module.exports = ThreadListCulture;
 
